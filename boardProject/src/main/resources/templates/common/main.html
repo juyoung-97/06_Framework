@@ -6,12 +6,14 @@
   <title>messages.properties 값 출력</title>
 
   <!-- templates/common/common.html 조각으로 추가 -->
+  <th:block th:replace="~{common/common}"></th:block>
 </head>
 <body>
 
   <main>
 
     <!-- common/header.html 을 조각으로 추가 -->
+    <th:block th:replace="~{common/header}"></th:block>
 
     <!-- 메인 페이지 내용  -->
     <section class="content">
@@ -24,6 +26,7 @@
         <!-- 로그인, 회원가입 버튼 -->
 
           <!-- 로그인이 되어있지 않은 경우 -->
+          <th:block th:if="${session.loginMember == null}">
           
             <!-- 로그인 박스 -->
             <form action="/member/login" method="POST" id="loginForm">
@@ -61,32 +64,44 @@
               </article>
     
             </form>
+          </th:block>
 
           <!-- 로그인이 되어있는 경우 -->
-          
+          <!--<th:block th:unless="${session.loginMember == null}"></th:block> -->
+          <th:block th:if="${session.loginMember != null}">
             <article class="login-area">
 
               <a href="#">
                 <!-- 프로필 이미지 -->
-                <img src="/images/user.png"
+                <!--
+                messages.properties 에 작성된 기본 사용자 이미지 사용
+                -> session.loginMember.profileImg에 유저가 등록한 
+                  이미지 경로가 있다면 (== null이 아니라면)
+                  session.loginMember.profileImg에 저장된 경로를 사용하겠다
+                -> 없다면 (== null 이라면) 
+                  /images/user.png(messages.properties에 
+                  user.default.image 등록) 사용
+                 -->
+                <img th:with="user=#{user.default.image}"
+                th:src="${session.loginMember.profileImg ?: user}"
                      id="memberProfile"
                      alt="프로필 이미지" >
               </a>
 
               <!-- 닉네임, 이메일, 로그아웃 버튼 영역 -->
-              <div class="my-info">
+              <div class="my-info" th:object="${session.loginMember}">
                 
                 <div>
-                  <a href="#" id="nickname">닉네임</a>
-                  <a href="#" id="logoutBtn">로그아웃</a>
+                  <a href="#" id="nickname" th:text="*{memberNickname}">닉네임</a>
+                  <a href="/member/logout" id="logoutBtn">로그아웃</a>
                 </div>
 
-                <p>이메일</p>
+                <p th:text="*{memberEmail}">이메일</p>
 
               </div>
 
             </article>
-          
+          </th:block>
 
       </section>
 
@@ -94,7 +109,9 @@
   </main>
 
   <!-- common/footer 추가-->
+  <th:block th:replace="~{common/footer}"></th:block>
 
   <!-- script 추가-->
+   <script src="/js/main.js"></script>
 </body>
 </html>
