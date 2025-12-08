@@ -55,6 +55,23 @@ public class MemberServiceImpl implements MemberService {
 		
 		return loginMember;
 	}
+
+
+	// 이메일 중복 검사 서비스
+	@Override
+	public int checkEmail(String memberEmail) {
+		// TODO Auto-generated method stub
+		return mapper.checkEmail(memberEmail);
+	}
+
+
+	
+	// 닉네임 중복 검사 서비스
+	@Override
+	public int checkNickname(String memberNickname) {
+		// TODO Auto-generated method stub
+		return mapper.checkNickname(memberNickname);
+	}
 	
 	
 	

@@ -50,6 +50,8 @@ VALUES(SEQ_MEMBER_NO.NEXTVAL,
 			 DEFAULT
 );
 
+SELECT * FROM MEMBER
+
 COMMIT;
 
 -- 회원 1번 유저일 암호화된 비밀번호 업데이트 (pass01!)
