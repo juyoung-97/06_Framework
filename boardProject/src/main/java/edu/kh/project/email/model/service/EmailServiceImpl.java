@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -28,25 +27,24 @@ public class EmailServiceImpl implements EmailService {
 	// JavaMailSender : 실제 메일 발송을 담당하는 객체(EmailConfig 참고)
 	private final SpringTemplateEngine templateEngine;
 	// SpringTemplateEngine : 타임리프를 이용해서 html 코드 -> java코드 변환
-
+	
 	@Override
 	public String sendEmail(String type, String email) {
-
+		
 		// 1. 인증키 생성 및 DB 저장
 		String authKey = createAuthKey();
-
+		
 		Map<String, String> map = new HashMap<>();
 		map.put("authKey", authKey);
 		map.put("email", email);
-
+		
 		// DB 저장 시도 - 실패 시 해당 메서드 종료
 		if(!storeAuthKey(map)) return null;
-
-
+		
+		
 		// 2. DB에 저장이 성공된 경우에 메일 발송 시도
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
 		// 메일 발송 시 사용하는 객체
-
 		
 		try {
 			// 메일 발송을 도와주는 Helper 클래스 
@@ -81,9 +79,9 @@ public class EmailServiceImpl implements EmailService {
 			e.printStackTrace();
 			return null; // 메일 발송 실패 시 null 반환
 		}
-
+	
 	}
-
+	
 	// HTML 템플릿에 데이터를 넣어 최종 HTML 생성
 	private String loadHtml(String authKey, String type) {
 		// Context(org.thymeleaf.context.Context)
@@ -99,19 +97,19 @@ public class EmailServiceImpl implements EmailService {
 	// 인증키와 이메일을 DB에 저장하는 메서드
 	@Transactional(rollbackFor = Exception.class) // 메서드 레벨에서도 이용 가능
 	public boolean storeAuthKey(Map<String, String> map) {
-
+		
 		// 1. 기존 이메일에 대한 인증키 update 수행
 		int result = mapper.updateAuthKey(map);
-
+		
 		// 2. update 실패 시 insert 수행
 		if(result == 0) {
 			result = mapper.insertAuthKey(map);
 		}
-
+		
 		// 3. 성공 여부 반환 (true / false)
 		return result > 0; 
 	}
-
+	
 
 	// 인증번호 발급 메서드
 	// UUID를 사용하여 인증키 생성
@@ -122,17 +120,13 @@ public class EmailServiceImpl implements EmailService {
 	private String createAuthKey() {
 		return UUID.randomUUID().toString().substring(0, 6);
 	}
-
-
+	
+	
 	@Override
 	public int checkAuthKey(Map<String, String> map) {
-		// TODO Auto-generated method stub
 		return mapper.checkAuthKey(map);
 	}
-
-
-
-
-
-
+	
+	
+	
 }

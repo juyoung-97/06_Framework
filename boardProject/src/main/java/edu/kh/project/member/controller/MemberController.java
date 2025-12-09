@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,10 +49,9 @@ public class MemberController {
 	@PostMapping("login")  // /member/login 요청 POST 방식 매핑
 	public String login(/* @ModelAttribute */ Member inputMember, 
 						RedirectAttributes ra,
-						Model model,
+						Model model, 
 						@RequestParam(value="saveId", required = false) String saveId,
-						HttpServletResponse resp
-						) {
+						HttpServletResponse resp) {
 		
 		// 로그인 서비스 호출
 		try {
@@ -70,24 +70,25 @@ public class MemberController {
 				// 2단계 : 클래스 위에 @SessionAttributes() 
 				// 어노테이션 작성하여 session scope 이동
 				
-				// ********************** Cookie *****************************
+				// **************** Cookie *********************
+				// 이메일 저장
 				
-				// 쿠키 객체 생성 (K:V)
+				// 쿠키 객체 생성 (K:V) 
 				Cookie cookie = new Cookie("saveId", loginMember.getMemberEmail());
 				// saveId=user01@kh.or.kr
 				
 				// 쿠키가 적용될 경로 설정
 				// -> 클라이언트가 어떤 요청을 할 때 쿠키가 첨부될지 지정
-				cookie.setPath("/");
+				cookie.setPath("/"); 
 				// "/" -> IP 또는 도메인 또는 localhost
-				//	   -> 메인페이지 + 그 하위 주소 모두
+				//     -> 메인페이지 + 그 하위 주소 모두
 				
 				// 쿠키의 만료 기간 지정
 				if(saveId != null) { // 아이디 저장 체크 시
-					cookie.setMaxAge(60 * 60 * 24 * 30); // 초단위로 지정
+					cookie.setMaxAge(60 * 60 * 24 * 30); // 30일 초단위로 지정
+					
 				} else { // 미체크 시
 					cookie.setMaxAge(0); // 0초 (클라이언트의 쿠키 삭제)
-					
 					
 				}
 				
@@ -120,9 +121,7 @@ public class MemberController {
 	}
 	
 	
-	
-	
-	/** 회원가입 페이지로 이동
+	/** 회원 가입 페이지로 이동
 	 * @return
 	 */
 	@GetMapping("signup")
@@ -131,26 +130,63 @@ public class MemberController {
 	}
 	
 	
-	
 	/** 이메일 중복검사 (비동기 요청)
 	 * @return
 	 */
 	@ResponseBody // 응답 본문으로 응답값을 돌려보냄
-	@GetMapping("checkEmail") // GET 방식 /member/checkEmail 요청 매핑
+	@GetMapping("checkEmail")  // GET 방식 /member/checkEmail 요청 매핑
 	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
 		return service.checkEmail(memberEmail);
 	}
 	
-	
-	
-	
-	@ResponseBody
+	/** 닉네임 중복 검사 
+	 * @param memberNickname
+	 * @return 중복 1, 아님 0
+	 */
+	@ResponseBody 
 	@GetMapping("checkNickname")
 	public int checkNickname(@RequestParam("memberNickname") String memberNickname) {
 		return service.checkNickname(memberNickname);
 	}
 	
-	
+	/** 회원 가입
+	 * @param inputMember : 커멘드 객체(입력된 회원 정보)
+	 * 						memberEmail, memberPw, memberNickname, memberTel
+	 * 						(memberAddress도 우편번호 필요없음)
+	 * @param memberAddress : 입력한 주소 input 3개의 값을 배열로 전달
+	 * 							[우편번호, 도로명/지번주소, 상세주소]
+	 * @param ra : RedirectAttributes로 리다이렉트 시 1회성으로 req -> session -> req로
+	 * 				전달되는 객체
+	 * @return
+	 */
+	@PostMapping("signup")
+	public String signup(@ModelAttribute Member inputMember,
+						@RequestParam("memberAddress") String[] memberAddress,
+						RedirectAttributes ra) {
+		
+		// 회원 가입 서비스 호출
+		int result = service.signup(inputMember, memberAddress);
+		
+		String path = null;
+		String message = null;
+		
+		if(result > 0) { // 성공 시
+			message = inputMember.getMemberNickname() + "님의 가입을 환영합니다!";
+			path = "/";
+		} else { // 실패 시
+			message = "회원 가입 실패...";
+			path = "signup";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+		// 성공 시 -> redirect:/ (메인페이지 재요청)
+		// 실패 시 -> redirect:signup (상대경로)
+		// 현재 주소 : /member/signup
+		// 목표 경로 : /member/signup (Get 방식 요청)
+		// redirect는 무조건 Get 방식 요청
+	}
 	
 	
 	
