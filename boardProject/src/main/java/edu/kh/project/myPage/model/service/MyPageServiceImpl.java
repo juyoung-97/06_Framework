@@ -19,7 +19,7 @@ import edu.kh.project.myPage.model.mapper.MyPageMapper;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Transactional(rollbackFor = Exception.class)
+@Transactional(rollbackFor = Exception.class) // 트랜잭션 처리를 스프링에게 맡기겠다! rollback / commit -> 트랜잭션
 @Slf4j
 @PropertySource("classpath:/config.properties")
 public class MyPageServiceImpl implements MyPageService{
