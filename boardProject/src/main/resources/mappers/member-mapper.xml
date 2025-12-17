@@ -51,6 +51,25 @@
 			 DEFAULT
 )
    </insert>
+   <!-- 회원 조회 -->
+   <select id="selectMemberList">
+   	SELECT MEMBER_NO, MEMBER_EMAIL, MEMBER_NICKNAME, MEMBER_DEL_FL
+   	FROM "MEMBER"
+   </select>
+   
+   <!-- 비밀번호 강제 변경 -->
+   <update id="resetPw">
+   	UPDATE "MEMBER" SET
+   	MEMBER_PW = #{encPw}
+   	WHERE MEMBER_NO = #{inputNo}
+   </update>
+   
+   <!-- 탈퇴 복구 -->
+   <update id="restoreMember">
+   	UPDATE "MEMBER" SET
+   	MEMBER_DEL_FL = 'N'
+   	WHERE MEMBER_NO = #{inputNo}
+   </update>
    
    
    

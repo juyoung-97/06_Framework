@@ -1,12 +1,24 @@
 package edu.kh.project.main.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import edu.kh.project.main.model.service.MainService;
+import edu.kh.project.member.model.dto.Member;
 
 @Controller
 public class MainController {
+	
+	@Autowired
+	private MainService service;
 	
 	@RequestMapping("/") // "/" 요청 매핑
 	public String mainPage() {
@@ -26,5 +38,15 @@ public class MainController {
 		return "redirect:/";
 		
 	}
+	
+	
+
+	
+	
+
+	
+	
+	
+	
 	
 }

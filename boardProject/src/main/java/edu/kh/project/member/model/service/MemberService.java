@@ -1,5 +1,7 @@
 package edu.kh.project.member.model.service;
 
+import java.util.List;
+
 import edu.kh.project.member.model.dto.Member;
 
 public interface MemberService {
@@ -28,6 +30,12 @@ public interface MemberService {
 	 * @return
 	 */
 	int signup(Member inputMember, String[] memberAddress);
+
+	List<Member> selectMemberList();
+
+	int resetPw(int inputNo);
+
+	int restoreMember(int inputNo);
 	
 	
 	
