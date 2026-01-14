@@ -56,7 +56,9 @@ public interface MyPageService {
 	 * @param memberNo
 	 * @return
 	 */
-	int fileUpload3(List<MultipartFile> aaaList, List<MultipartFile> bbbList, int memberNo) throws Exception;
+	int fileUpload3(List<MultipartFile> aaaList, 
+				List<MultipartFile> bbbList, 
+				int memberNo) throws Exception;
 
 	/** 프로필 이미지 변경 서비스
 	 * @param profileImg
@@ -64,5 +66,14 @@ public interface MyPageService {
 	 * @return
 	 */
 	int profile(MultipartFile profileImg, Member loginMember) throws Exception;
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

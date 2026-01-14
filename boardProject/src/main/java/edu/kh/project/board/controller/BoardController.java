@@ -243,18 +243,13 @@ public class BoardController {
 		return path;
 	}
 	
-	
-	
-	// 게시글 좋아요 체크/해체 (비동기)
+	// 게시글 좋아요 체크/해제 (비동기)
 	@ResponseBody
-	@PostMapping("like")
+	@PostMapping("like") //  /board/like (POST) 요청 매핑
 	public int boardLike(@RequestBody Map<String, Integer> map) {
-		
-		
-		
-		
 		return service.boardLike(map);
 	}
+	
 	
 	
 	

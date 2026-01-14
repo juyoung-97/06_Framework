@@ -19,7 +19,7 @@ public interface BoardService {
 	 */
 	Map<String, Object> selectBoardList(int boardCode, int cp);
 
-	/** 검색 서비스 (특정 게시판의 지정된 페이지에서 검색한 목록 조회)
+	/** 검색 서비스(특정 게시판의 지정된 페이지에서 검색한 목록 조회)
 	 * @param paramMap
 	 * @param cp
 	 * @return
@@ -38,10 +38,15 @@ public interface BoardService {
 	 */
 	int updateReadCount(int boardNo);
 
-	/**
+	/** 게시글 좋아요 체크/해제 서비스
 	 * @param map
 	 * @return
 	 */
 	int boardLike(Map<String, Integer> map);
+
+	/** DB 이미지 파일명 목록 조회 서비스
+	 * @return
+	 */
+	List<String> selectDbImageList();
 
 }

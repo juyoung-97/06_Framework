@@ -8,39 +8,32 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.kh.project.board.model.dto.Comment;
 import edu.kh.project.board.model.mapper.CommentMapper;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-@Slf4j
 public class CommentServiceImpl implements CommentService{
 	
 	@Autowired
 	private CommentMapper mapper;
-	
-	
+
 	@Override
 	public List<Comment> select(int boardNo) {
-		// TODO Auto-generated method stub
 		return mapper.select(boardNo);
 	}
 
 	@Override
 	public int insert(Comment comment) {
-		// TODO Auto-generated method stub
 		return mapper.insert(comment);
 	}
 
 	@Override
 	public int delete(int commentNo) {
-		// TODO Auto-generated method stub
 		return mapper.delete(commentNo);
 	}
 
 	@Override
 	public int update(Comment comment) {
-		// TODO Auto-generated method stub
 		return mapper.update(comment);
 	}
-
+	
 }

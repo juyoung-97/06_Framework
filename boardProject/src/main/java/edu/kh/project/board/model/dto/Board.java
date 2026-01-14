@@ -30,16 +30,21 @@ public class Board {
 	private int commentCount; // 댓글 수
 	private int likeCount;    // 좋아요 수
 	
-	private String profileImg; // 게시글 작성자 프로필 이미지
-	private String thumbnail; // 게시글의 썸네일 이미지
 	
-	private int likeCheck; // 게시글 좋아요 여부 확인
+	// 게시글 작성자 프로필 이미지
+	private String profileImg;
 	
-	private List<BoardImg> imageList; // 게시글에 등록된 이미지 목록
+	// 게시글의 썸네일 이미지
+	private String thumbnail;
 	
-	private List<Comment> commentList; // 게시글에 등록된 댓글 목록
+	// 게시글 좋아요 여부 확인
+	private int likeCheck;
 	
+	// 게시글에 등록된 이미지 목록 
+	private List<BoardImg> imageList;
 	
+	// 게시글에 등록된 댓글 목록
+	private List<Comment> commentList;
 	
 	
 	

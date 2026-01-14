@@ -29,7 +29,7 @@ public interface BoardMapper {
 	 */
 	List<Board> selectBoardList(int boardCode, RowBounds rowBounds);
 
-	/** 검색기능 SQL
+	/** 검색 조건이 맞는 게시글 수 조회 SQL 수행
 	 * @param paramMap
 	 * @return
 	 */
@@ -48,13 +48,13 @@ public interface BoardMapper {
 	 */
 	Board selectOne(Map<String, Integer> map);
 
-	/** 조회수 1증가 SQL (UPDATE)
+	/** 조회 수 1 증가 SQL 수행 
 	 * @param boardNo
 	 * @return
 	 */
 	int updateReadCount(int boardNo);
 
-	/** 조회 수 조회 SQL 수행 (SELECT)
+	/** 조회 수 조회 SQL 수행
 	 * @param boardNo
 	 * @return
 	 */
@@ -73,9 +73,20 @@ public interface BoardMapper {
 	int insertBoardLike(Map<String, Integer> map);
 
 	/** 게시글 좋아요 갯수 조회(SELECT)
-	 * @param integer
+	 * @param boardNo
 	 * @return
 	 */
 	int selectLikeCount(int boardNo);
 
+	/** DB 이미지 파일명 목록 조회 
+	 * @return
+	 */
+	List<String> selectDbImageList();
+
+	
+	
+	
+	
+	
+	
 }
